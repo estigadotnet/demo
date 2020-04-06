@@ -35,7 +35,7 @@ function Database_Connecting(&$info) {
 	if (CurrentHost() == "demo.salinalintas.com") { // not connecting to local PC
 
 		// connect to the production database 
-		$info["host"] = "localhost";
+		$info["host"] = "mysql.hostinger.co.id";
 		$info["user"] = "u473805576_iuran";
 		$info["pass"] = "PresarioCQ43";
 		$info["db"] = "u473805576_iuran";
