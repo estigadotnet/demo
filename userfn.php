@@ -26,8 +26,9 @@ function Database_Connecting(&$info) {
 
 	// Example:
 	//var_dump($info);
+	//echo $info["host"];
 
-	echo $info["host"];
+	echo CurrentHost();
 
 	//if ($info["id"] == "DB" && CurrentUserIP() == "127.0.0.1") { // Testing on local PC
 	//	$info["host"] = "locahost";
