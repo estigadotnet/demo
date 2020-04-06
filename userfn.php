@@ -25,7 +25,8 @@ function GetStartsWithAFilter($FldExpression, $dbid = 0) {
 function Database_Connecting(&$info) {
 
 	// Example:
-	//var_dump($info);
+	var_dump($info);
+
 	//if ($info["id"] == "DB" && CurrentUserIP() == "127.0.0.1") { // Testing on local PC
 	//	$info["host"] = "locahost";
 	//	$info["user"] = "root";
