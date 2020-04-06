@@ -26,16 +26,21 @@ function Database_Connecting(&$info) {
 
 	// Example:
 	//var_dump($info);
-	//echo $info["host"];
-
-	echo CurrentHost();
-
 	//if ($info["id"] == "DB" && CurrentUserIP() == "127.0.0.1") { // Testing on local PC
 	//	$info["host"] = "locahost";
 	//	$info["user"] = "root";
 	//	$info["pass"] = "";
 	//}
 
+	if (CurrentHost() == "demo.salinalintas.com") { // not connecting to local PC
+
+		// connect to the production database 
+		$info["host"] = "localhost";
+		$info["user"] = "u473805576_iuran";
+		$info["pass"] = "PresarioCQ43";
+		$info["db"] = "u473805576_iuran";
+		$info["port"] = "3306";
+	}
 }
 
 // Database Connected event
