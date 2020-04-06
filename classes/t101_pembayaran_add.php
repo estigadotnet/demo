@@ -799,7 +799,7 @@ class t101_pembayaran_add extends t101_pembayaran
 				$this->Tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->Tanggal->setFormValue($val);
-			$this->Tanggal->CurrentValue = UnFormatDateTime($this->Tanggal->CurrentValue, 1);
+			$this->Tanggal->CurrentValue = UnFormatDateTime($this->Tanggal->CurrentValue, 11);
 		}
 
 		// Check field name 'loket_id' first before field var 'x_loket_id'
@@ -838,7 +838,7 @@ class t101_pembayaran_add extends t101_pembayaran
 	{
 		global $CurrentForm;
 		$this->Tanggal->CurrentValue = $this->Tanggal->FormValue;
-		$this->Tanggal->CurrentValue = UnFormatDateTime($this->Tanggal->CurrentValue, 1);
+		$this->Tanggal->CurrentValue = UnFormatDateTime($this->Tanggal->CurrentValue, 11);
 		$this->loket_id->CurrentValue = $this->loket_id->FormValue;
 		$this->anggota_id->CurrentValue = $this->anggota_id->FormValue;
 		$this->Jumlah->CurrentValue = $this->Jumlah->FormValue;
@@ -951,7 +951,7 @@ class t101_pembayaran_add extends t101_pembayaran
 
 			// Tanggal
 			$this->Tanggal->ViewValue = $this->Tanggal->CurrentValue;
-			$this->Tanggal->ViewValue = FormatDateTime($this->Tanggal->ViewValue, 1);
+			$this->Tanggal->ViewValue = FormatDateTime($this->Tanggal->ViewValue, 11);
 			$this->Tanggal->ViewCustomAttributes = "";
 
 			// loket_id
@@ -1031,11 +1031,10 @@ class t101_pembayaran_add extends t101_pembayaran
 			// Tanggal
 			$this->Tanggal->EditAttrs["class"] = "form-control";
 			$this->Tanggal->EditCustomAttributes = "";
-			$this->Tanggal->EditValue = HtmlEncode(FormatDateTime($this->Tanggal->CurrentValue, 8));
+			$this->Tanggal->EditValue = HtmlEncode(FormatDateTime($this->Tanggal->CurrentValue, 11));
 			$this->Tanggal->PlaceHolder = RemoveHtml($this->Tanggal->caption());
 
 			// loket_id
-			$this->loket_id->EditAttrs["class"] = "form-control";
 			$this->loket_id->EditCustomAttributes = "";
 			$curVal = trim(strval($this->loket_id->CurrentValue));
 			if ($curVal != "")
@@ -1044,6 +1043,8 @@ class t101_pembayaran_add extends t101_pembayaran
 				$this->loket_id->ViewValue = $this->loket_id->Lookup !== NULL && is_array($this->loket_id->Lookup->Options) ? $curVal : NULL;
 			if ($this->loket_id->ViewValue !== NULL) { // Load from cache
 				$this->loket_id->EditValue = array_values($this->loket_id->Lookup->Options);
+				if ($this->loket_id->ViewValue == "")
+					$this->loket_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
@@ -1052,6 +1053,14 @@ class t101_pembayaran_add extends t101_pembayaran
 				}
 				$sqlWrk = $this->loket_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+					$this->loket_id->ViewValue = $this->loket_id->displayValue($arwrk);
+				} else {
+					$this->loket_id->ViewValue = $Language->phrase("PleaseSelect");
+				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
@@ -1059,7 +1068,6 @@ class t101_pembayaran_add extends t101_pembayaran
 			}
 
 			// anggota_id
-			$this->anggota_id->EditAttrs["class"] = "form-control";
 			$this->anggota_id->EditCustomAttributes = "";
 			$curVal = trim(strval($this->anggota_id->CurrentValue));
 			if ($curVal != "")
@@ -1068,6 +1076,8 @@ class t101_pembayaran_add extends t101_pembayaran
 				$this->anggota_id->ViewValue = $this->anggota_id->Lookup !== NULL && is_array($this->anggota_id->Lookup->Options) ? $curVal : NULL;
 			if ($this->anggota_id->ViewValue !== NULL) { // Load from cache
 				$this->anggota_id->EditValue = array_values($this->anggota_id->Lookup->Options);
+				if ($this->anggota_id->ViewValue == "")
+					$this->anggota_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
@@ -1076,6 +1086,15 @@ class t101_pembayaran_add extends t101_pembayaran
 				}
 				$sqlWrk = $this->anggota_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+					$arwrk[3] = HtmlEncode($rswrk->fields('df3'));
+					$this->anggota_id->ViewValue = $this->anggota_id->displayValue($arwrk);
+				} else {
+					$this->anggota_id->ViewValue = $Language->phrase("PleaseSelect");
+				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
@@ -1133,7 +1152,7 @@ class t101_pembayaran_add extends t101_pembayaran
 				AddMessage($FormError, str_replace("%s", $this->Tanggal->caption(), $this->Tanggal->RequiredErrorMessage));
 			}
 		}
-		if (!CheckDate($this->Tanggal->FormValue)) {
+		if (!CheckEuroDate($this->Tanggal->FormValue)) {
 			AddMessage($FormError, $this->Tanggal->errorMessage());
 		}
 		if ($this->loket_id->Required) {
@@ -1180,7 +1199,7 @@ class t101_pembayaran_add extends t101_pembayaran
 		$rsnew = [];
 
 		// Tanggal
-		$this->Tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->Tanggal->CurrentValue, 1), CurrentDate(), FALSE);
+		$this->Tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->Tanggal->CurrentValue, 11), CurrentDate(), FALSE);
 
 		// loket_id
 		$this->loket_id->setDbValueDef($rsnew, $this->loket_id->CurrentValue, 0, FALSE);

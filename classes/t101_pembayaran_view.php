@@ -863,7 +863,7 @@ class t101_pembayaran_view extends t101_pembayaran
 
 			// Tanggal
 			$this->Tanggal->ViewValue = $this->Tanggal->CurrentValue;
-			$this->Tanggal->ViewValue = FormatDateTime($this->Tanggal->ViewValue, 1);
+			$this->Tanggal->ViewValue = FormatDateTime($this->Tanggal->ViewValue, 11);
 			$this->Tanggal->ViewCustomAttributes = "";
 
 			// loket_id

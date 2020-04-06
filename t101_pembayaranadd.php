@@ -61,7 +61,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_pembayaran_add->Tanggal->caption(), $t101_pembayaran_add->Tanggal->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_Tanggal");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($t101_pembayaran_add->Tanggal->errorMessage()) ?>");
 			<?php if ($t101_pembayaran_add->loket_id->Required) { ?>
 				elm = this.getElements("x" + infix + "_loket_id");
@@ -141,11 +141,11 @@ $t101_pembayaran_add->showMessage();
 		<label id="elh_t101_pembayaran_Tanggal" for="x_Tanggal" class="<?php echo $t101_pembayaran_add->LeftColumnClass ?>"><?php echo $t101_pembayaran_add->Tanggal->caption() ?><?php echo $t101_pembayaran_add->Tanggal->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t101_pembayaran_add->RightColumnClass ?>"><div <?php echo $t101_pembayaran_add->Tanggal->cellAttributes() ?>>
 <span id="el_t101_pembayaran_Tanggal">
-<input type="text" data-table="t101_pembayaran" data-field="x_Tanggal" data-format="1" name="x_Tanggal" id="x_Tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($t101_pembayaran_add->Tanggal->getPlaceHolder()) ?>" value="<?php echo $t101_pembayaran_add->Tanggal->EditValue ?>"<?php echo $t101_pembayaran_add->Tanggal->editAttributes() ?>>
+<input type="text" data-table="t101_pembayaran" data-field="x_Tanggal" data-format="11" name="x_Tanggal" id="x_Tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($t101_pembayaran_add->Tanggal->getPlaceHolder()) ?>" value="<?php echo $t101_pembayaran_add->Tanggal->EditValue ?>"<?php echo $t101_pembayaran_add->Tanggal->editAttributes() ?>>
 <?php if (!$t101_pembayaran_add->Tanggal->ReadOnly && !$t101_pembayaran_add->Tanggal->Disabled && !isset($t101_pembayaran_add->Tanggal->EditAttrs["readonly"]) && !isset($t101_pembayaran_add->Tanggal->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["ft101_pembayaranadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("ft101_pembayaranadd", "x_Tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":1});
+	ew.createDateTimePicker("ft101_pembayaranadd", "x_Tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":11});
 });
 </script>
 <?php } ?>
@@ -158,12 +158,14 @@ loadjs.ready(["ft101_pembayaranadd", "datetimepicker"], function() {
 		<label id="elh_t101_pembayaran_loket_id" for="x_loket_id" class="<?php echo $t101_pembayaran_add->LeftColumnClass ?>"><?php echo $t101_pembayaran_add->loket_id->caption() ?><?php echo $t101_pembayaran_add->loket_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t101_pembayaran_add->RightColumnClass ?>"><div <?php echo $t101_pembayaran_add->loket_id->cellAttributes() ?>>
 <span id="el_t101_pembayaran_loket_id">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="t101_pembayaran" data-field="x_loket_id" data-value-separator="<?php echo $t101_pembayaran_add->loket_id->displayValueSeparatorAttribute() ?>" id="x_loket_id" name="x_loket_id"<?php echo $t101_pembayaran_add->loket_id->editAttributes() ?>>
-			<?php echo $t101_pembayaran_add->loket_id->selectOptionListHtml("x_loket_id") ?>
-		</select>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_loket_id"><?php echo EmptyValue(strval($t101_pembayaran_add->loket_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_pembayaran_add->loket_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_pembayaran_add->loket_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_pembayaran_add->loket_id->ReadOnly || $t101_pembayaran_add->loket_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_loket_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
 </div>
 <?php echo $t101_pembayaran_add->loket_id->Lookup->getParamTag($t101_pembayaran_add, "p_x_loket_id") ?>
+<input type="hidden" data-table="t101_pembayaran" data-field="x_loket_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_pembayaran_add->loket_id->displayValueSeparatorAttribute() ?>" name="x_loket_id" id="x_loket_id" value="<?php echo $t101_pembayaran_add->loket_id->CurrentValue ?>"<?php echo $t101_pembayaran_add->loket_id->editAttributes() ?>>
 </span>
 <?php echo $t101_pembayaran_add->loket_id->CustomMsg ?></div></div>
 	</div>
@@ -173,12 +175,14 @@ loadjs.ready(["ft101_pembayaranadd", "datetimepicker"], function() {
 		<label id="elh_t101_pembayaran_anggota_id" for="x_anggota_id" class="<?php echo $t101_pembayaran_add->LeftColumnClass ?>"><?php echo $t101_pembayaran_add->anggota_id->caption() ?><?php echo $t101_pembayaran_add->anggota_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t101_pembayaran_add->RightColumnClass ?>"><div <?php echo $t101_pembayaran_add->anggota_id->cellAttributes() ?>>
 <span id="el_t101_pembayaran_anggota_id">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="t101_pembayaran" data-field="x_anggota_id" data-value-separator="<?php echo $t101_pembayaran_add->anggota_id->displayValueSeparatorAttribute() ?>" id="x_anggota_id" name="x_anggota_id"<?php echo $t101_pembayaran_add->anggota_id->editAttributes() ?>>
-			<?php echo $t101_pembayaran_add->anggota_id->selectOptionListHtml("x_anggota_id") ?>
-		</select>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_anggota_id"><?php echo EmptyValue(strval($t101_pembayaran_add->anggota_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_pembayaran_add->anggota_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_pembayaran_add->anggota_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_pembayaran_add->anggota_id->ReadOnly || $t101_pembayaran_add->anggota_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_anggota_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
 </div>
 <?php echo $t101_pembayaran_add->anggota_id->Lookup->getParamTag($t101_pembayaran_add, "p_x_anggota_id") ?>
+<input type="hidden" data-table="t101_pembayaran" data-field="x_anggota_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_pembayaran_add->anggota_id->displayValueSeparatorAttribute() ?>" name="x_anggota_id" id="x_anggota_id" value="<?php echo $t101_pembayaran_add->anggota_id->CurrentValue ?>"<?php echo $t101_pembayaran_add->anggota_id->editAttributes() ?>>
 </span>
 <?php echo $t101_pembayaran_add->anggota_id->CustomMsg ?></div></div>
 	</div>
@@ -212,9 +216,7 @@ if (Config("DEBUG"))
 loadjs.ready("load", function() {
 
 	// Startup script
-	// Write your table-specific startup script here
-	// console.log("page loaded");
-
+	$("#x_Tanggal").val("<?php echo date('d-m-Y H:i:s');?>");
 });
 </script>
 <?php include_once "footer.php"; ?>

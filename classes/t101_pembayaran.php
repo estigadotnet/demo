@@ -73,11 +73,11 @@ class t101_pembayaran extends DbTable
 		$this->fields['id'] = &$this->id;
 
 		// Tanggal
-		$this->Tanggal = new DbField('t101_pembayaran', 't101_pembayaran', 'x_Tanggal', 'Tanggal', '`Tanggal`', CastDateFieldForLike("`Tanggal`", 1, "DB"), 135, 19, 1, FALSE, '`Tanggal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Tanggal = new DbField('t101_pembayaran', 't101_pembayaran', 'x_Tanggal', 'Tanggal', '`Tanggal`', CastDateFieldForLike("`Tanggal`", 11, "DB"), 135, 19, 11, FALSE, '`Tanggal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->Tanggal->Nullable = FALSE; // NOT NULL field
 		$this->Tanggal->Required = TRUE; // Required field
 		$this->Tanggal->Sortable = TRUE; // Allow sort
-		$this->Tanggal->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
+		$this->Tanggal->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
 		$this->fields['Tanggal'] = &$this->Tanggal;
 
 		// loket_id
@@ -725,7 +725,7 @@ class t101_pembayaran extends DbTable
 
 		// Tanggal
 		$this->Tanggal->ViewValue = $this->Tanggal->CurrentValue;
-		$this->Tanggal->ViewValue = FormatDateTime($this->Tanggal->ViewValue, 1);
+		$this->Tanggal->ViewValue = FormatDateTime($this->Tanggal->ViewValue, 11);
 		$this->Tanggal->ViewCustomAttributes = "";
 
 		// loket_id
@@ -830,7 +830,7 @@ class t101_pembayaran extends DbTable
 		// Tanggal
 		$this->Tanggal->EditAttrs["class"] = "form-control";
 		$this->Tanggal->EditCustomAttributes = "";
-		$this->Tanggal->EditValue = FormatDateTime($this->Tanggal->CurrentValue, 8);
+		$this->Tanggal->EditValue = FormatDateTime($this->Tanggal->CurrentValue, 11);
 		$this->Tanggal->PlaceHolder = RemoveHtml($this->Tanggal->caption());
 
 		// loket_id
