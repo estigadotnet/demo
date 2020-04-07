@@ -1,15 +1,15 @@
 <?php
 namespace PHPMaker2020\p_iuran_1_0;
 
+// Autoload
+include_once "autoload.php";
+
 // Session
 if (session_status() !== PHP_SESSION_ACTIVE)
-	session_start(); // Init session data
+	\Delight\Cookie\Session::start(Config("COOKIE_SAMESITE")); // Init session data
 
 // Output buffering
 ob_start();
-
-// Autoload
-include_once "autoload.php";
 ?>
 <?php
 
@@ -45,7 +45,7 @@ loadjs.ready("head", function() {
 		if (!this.validateRequired)
 			return true; // Ignore validation
 		var $ = jQuery, fobj = this.getForm(), $fobj = $(fobj);
-		if ($fobj.find("#confirm").val() == "F")
+		if ($fobj.find("#confirm").val() == "confirm")
 			return true;
 		var elm, felm, uelm, addcnt = 0;
 		var $k = $fobj.find("#" + this.formKeyCountName); // Get key_count

@@ -551,7 +551,7 @@ class t002_anggota_edit extends t002_anggota
 			$pageSize = Post("recperpage", 10);
 			$offset = Post("start", 0);
 		} elseif (SameText($lookupType, "autosuggest")) {
-			$searchValue = Get("q", "");
+			$searchValue = Param("q", "");
 			$pageSize = Param("n", -1);
 			$pageSize = is_numeric($pageSize) ? (int)$pageSize : -1;
 			if ($pageSize <= 0)

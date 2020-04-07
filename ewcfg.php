@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'kzvAnIRRIk3ZR3jw', // Random key for encryption
+	"RANDOM_KEY" => 'gzEvehbtPAAgct9T', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/p_iuran_1_0.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
@@ -293,6 +293,7 @@ $CONFIG = [
 	"TABLE_SORT" => "sort", // Table sort
 	"TABLE_KEY" => "key", // Table key
 	"TABLE_SHOW_MASTER" => "showmaster", // Table show master
+	"TABLE_MASTER" => "master", // Table show master (alternate key)
 	"TABLE_SHOW_DETAIL" => "showdetail", // Table show detail
 	"TABLE_MASTER_TABLE" => "mastertable", // Master table
 	"TABLE_DETAIL_TABLE" => "detailtable", // Detail table
@@ -978,9 +979,12 @@ $CONFIG = [
 
 	// Cookies
 	"CONSENT_COOKIE_NAME" => "ConsentCookie", // Consent cookie name
-	"COOKIE_EXPIRY_TIME" => time() + 365*24*60*60, // Change cookie expiry time here
 	"COOKIE_CONSENT_CLASS" => "toast-body bg-secondary", // CSS class name for cookie consent
 	"COOKIE_CONSENT_BUTTON_CLASS" => "btn btn-dark btn-sm", // CSS class name for cookie consent buttons
+	"COOKIE_EXPIRY_TIME" => time() + 365*24*60*60, // Change cookie expiry time here
+	"COOKIE_HTTP_ONLY" => FALSE,
+	"COOKIE_SECURE" => "FALSE",
+	"COOKIE_SAMESITE" => "Lax",
 
 	// Mime type
 	"DEFAULT_MIME_TYPE" => "application/octet-stream",

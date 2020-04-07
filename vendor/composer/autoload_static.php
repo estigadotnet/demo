@@ -44,6 +44,8 @@ class ComposerStaticInit3a576f419224accc073e6734f1162061
         'D' => 
         array (
             'Dompdf\\' => 7,
+            'Delight\\Http\\' => 13,
+            'Delight\\Cookie\\' => 15,
             'Defuse\\Crypto\\' => 14,
         ),
     );
@@ -104,6 +106,14 @@ class ComposerStaticInit3a576f419224accc073e6734f1162061
         'Dompdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/hkvstore/dompdf/src',
+        ),
+        'Delight\\Http\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/delight-im/http/src',
+        ),
+        'Delight\\Cookie\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/delight-im/cookie/src',
         ),
         'Defuse\\Crypto\\' => 
         array (

@@ -22,7 +22,8 @@
 		"defuse/php-encryption": "~2.2.1",
 		"hkvstore/phpthumb": "~2.1.1",
 		"athari/yalinqo": "^2.4.2",
-		"dflydev/dot-access-data": "1.1.0",
+		"dflydev/dot-access-data": "^1.1.0",
+		"delight-im/cookie": "^3.3.1",
 		"hkvstore/dompdf": "~0.8.301"
 	},
 	"autoload": {}

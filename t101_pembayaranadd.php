@@ -1,15 +1,15 @@
 <?php
 namespace PHPMaker2020\p_iuran_1_0;
 
+// Autoload
+include_once "autoload.php";
+
 // Session
 if (session_status() !== PHP_SESSION_ACTIVE)
-	session_start(); // Init session data
+	\Delight\Cookie\Session::start(Config("COOKIE_SAMESITE")); // Init session data
 
 // Output buffering
 ob_start();
-
-// Autoload
-include_once "autoload.php";
 ?>
 <?php
 
@@ -45,7 +45,7 @@ loadjs.ready("head", function() {
 		if (!this.validateRequired)
 			return true; // Ignore validation
 		var $ = jQuery, fobj = this.getForm(), $fobj = $(fobj);
-		if ($fobj.find("#confirm").val() == "F")
+		if ($fobj.find("#confirm").val() == "confirm")
 			return true;
 		var elm, felm, uelm, addcnt = 0;
 		var $k = $fobj.find("#" + this.formKeyCountName); // Get key_count
@@ -158,14 +158,12 @@ loadjs.ready(["ft101_pembayaranadd", "datetimepicker"], function() {
 		<label id="elh_t101_pembayaran_loket_id" for="x_loket_id" class="<?php echo $t101_pembayaran_add->LeftColumnClass ?>"><?php echo $t101_pembayaran_add->loket_id->caption() ?><?php echo $t101_pembayaran_add->loket_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t101_pembayaran_add->RightColumnClass ?>"><div <?php echo $t101_pembayaran_add->loket_id->cellAttributes() ?>>
 <span id="el_t101_pembayaran_loket_id">
-<div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_loket_id"><?php echo EmptyValue(strval($t101_pembayaran_add->loket_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_pembayaran_add->loket_id->ViewValue ?></div>
-	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_pembayaran_add->loket_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_pembayaran_add->loket_id->ReadOnly || $t101_pembayaran_add->loket_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_loket_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
-	</div>
+<div class="input-group">
+	<select class="custom-select ew-custom-select" data-table="t101_pembayaran" data-field="x_loket_id" data-value-separator="<?php echo $t101_pembayaran_add->loket_id->displayValueSeparatorAttribute() ?>" id="x_loket_id" name="x_loket_id"<?php echo $t101_pembayaran_add->loket_id->editAttributes() ?>>
+			<?php echo $t101_pembayaran_add->loket_id->selectOptionListHtml("x_loket_id") ?>
+		</select>
 </div>
 <?php echo $t101_pembayaran_add->loket_id->Lookup->getParamTag($t101_pembayaran_add, "p_x_loket_id") ?>
-<input type="hidden" data-table="t101_pembayaran" data-field="x_loket_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_pembayaran_add->loket_id->displayValueSeparatorAttribute() ?>" name="x_loket_id" id="x_loket_id" value="<?php echo $t101_pembayaran_add->loket_id->CurrentValue ?>"<?php echo $t101_pembayaran_add->loket_id->editAttributes() ?>>
 </span>
 <?php echo $t101_pembayaran_add->loket_id->CustomMsg ?></div></div>
 	</div>

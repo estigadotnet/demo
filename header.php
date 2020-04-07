@@ -244,7 +244,7 @@ loadjs.ready("head", function() {
 				<a class="nav-link" data-widget="pushmenu" href="#" onclick="return false;"><i class="fas fa-bars"></i></a>
 			</li>
 			<a class="navbar-brand d-none d-md-block" href="#"  onclick="return false;">
-				<span class="brand-text">Iuran v1.0 (Demo)</span>
+				<img src="<?php echo $RELATIVE_PATH ?>images/LOGO NU (Small) (Phone) (Custom) (Custom).jpg" alt="" class="brand-image ew-brand-image">
 			</a>
 		</ul>
 		<!-- Right navbar links -->
@@ -255,7 +255,7 @@ loadjs.ready("head", function() {
 	<aside class="<?php echo Config("SIDEBAR_CLASS") ?>">
 		<!-- Brand Logo //** Note: Only licensed users are allowed to change the logo ** -->
 		<a href="#" class="brand-link">
-			<span class="brand-text">Iuran v1.0 (Demo)</span>
+			<img src="<?php echo $RELATIVE_PATH ?>images/LOGO NU (Small) (Phone) (Custom) (Custom).jpg" alt="" class="brand-image ew-brand-image">
 		</a>
 		<!-- Sidebar -->
 		<div class="sidebar">

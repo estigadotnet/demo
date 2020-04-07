@@ -1103,6 +1103,12 @@ class t101_pembayaran extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
+		$q = "select concat(Kode, ', ', Nama) from t001_loket";
+		$q = "select id from t001_loket";
+
+		//$this->loket_id->EditValue = ExecuteScalar($q);
+		$this->loket_id->EditValue = ExecuteScalar($q);
+		$this->Jumlah->EditValue = 25000;
 	}
 
 	// User ID Filtering event

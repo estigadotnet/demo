@@ -1,15 +1,15 @@
 <?php
 namespace PHPMaker2020\p_iuran_1_0;
 
+// Autoload
+include_once "autoload.php";
+
 // Session
 if (session_status() !== PHP_SESSION_ACTIVE)
-	session_start(); // Init session data
+	\Delight\Cookie\Session::start(Config("COOKIE_SAMESITE")); // Init session data
 
 // Output buffering
 ob_start();
-
-// Autoload
-include_once "autoload.php";
 ?>
 <?php
 

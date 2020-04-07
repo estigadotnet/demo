@@ -8,7 +8,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
  */
 class Api
 {
-	protected $SecretKey = 'm5I83b6oMRL928lT';
+	protected $SecretKey = 'K85c89nW6Q1TvZC1';
 	protected $Algorithm = 'HS512';
 
 	// For some reason, the "Authorization" header is removed by IIS, changed to "X-Authorization"
@@ -209,7 +209,7 @@ class Api
 	 *  - URL rewrite: api/progress
 	 *  - Without URL rewrite: api/?action=progress
 	 * 9. export chart
-	 *  - URL rewrite: api/exprtchart
+	 *  - URL rewrite: api/exportchart
 	 *  - Without URL rewrite: api/?action=exportchart
 	 * @return Response
 	 */

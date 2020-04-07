@@ -551,7 +551,7 @@ class t101_pembayaran_edit extends t101_pembayaran
 			$pageSize = Post("recperpage", 10);
 			$offset = Post("start", 0);
 		} elseif (SameText($lookupType, "autosuggest")) {
-			$searchValue = Get("q", "");
+			$searchValue = Param("q", "");
 			$pageSize = Param("n", -1);
 			$pageSize = is_numeric($pageSize) ? (int)$pageSize : -1;
 			if ($pageSize <= 0)
@@ -1050,6 +1050,7 @@ class t101_pembayaran_edit extends t101_pembayaran
 			$this->Tanggal->PlaceHolder = RemoveHtml($this->Tanggal->caption());
 
 			// loket_id
+			$this->loket_id->EditAttrs["class"] = "form-control";
 			$this->loket_id->EditCustomAttributes = "";
 			$curVal = trim(strval($this->loket_id->CurrentValue));
 			if ($curVal != "")
@@ -1058,8 +1059,6 @@ class t101_pembayaran_edit extends t101_pembayaran
 				$this->loket_id->ViewValue = $this->loket_id->Lookup !== NULL && is_array($this->loket_id->Lookup->Options) ? $curVal : NULL;
 			if ($this->loket_id->ViewValue !== NULL) { // Load from cache
 				$this->loket_id->EditValue = array_values($this->loket_id->Lookup->Options);
-				if ($this->loket_id->ViewValue == "")
-					$this->loket_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
@@ -1068,14 +1067,6 @@ class t101_pembayaran_edit extends t101_pembayaran
 				}
 				$sqlWrk = $this->loket_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
-					$this->loket_id->ViewValue = $this->loket_id->displayValue($arwrk);
-				} else {
-					$this->loket_id->ViewValue = $Language->phrase("PleaseSelect");
-				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();

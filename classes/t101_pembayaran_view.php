@@ -577,6 +577,76 @@ class t101_pembayaran_view extends t101_pembayaran
 			$this->id->Visible = FALSE;
 	}
 
+	// Lookup data
+	public function lookup()
+	{
+		global $Language, $Security;
+		if (!isset($Language))
+			$Language = new Language(Config("LANGUAGE_FOLDER"), Post("language", ""));
+
+		// Set up API request
+		if (!$this->setupApiRequest())
+			return FALSE;
+
+		// Get lookup object
+		$fieldName = Post("field");
+		if (!array_key_exists($fieldName, $this->fields))
+			return FALSE;
+		$lookupField = $this->fields[$fieldName];
+		$lookup = $lookupField->Lookup;
+		if ($lookup === NULL)
+			return FALSE;
+
+		// Get lookup parameters
+		$lookupType = Post("ajax", "unknown");
+		$pageSize = -1;
+		$offset = -1;
+		$searchValue = "";
+		if (SameText($lookupType, "modal")) {
+			$searchValue = Post("sv", "");
+			$pageSize = Post("recperpage", 10);
+			$offset = Post("start", 0);
+		} elseif (SameText($lookupType, "autosuggest")) {
+			$searchValue = Param("q", "");
+			$pageSize = Param("n", -1);
+			$pageSize = is_numeric($pageSize) ? (int)$pageSize : -1;
+			if ($pageSize <= 0)
+				$pageSize = Config("AUTO_SUGGEST_MAX_ENTRIES");
+			$start = Param("start", -1);
+			$start = is_numeric($start) ? (int)$start : -1;
+			$page = Param("page", -1);
+			$page = is_numeric($page) ? (int)$page : -1;
+			$offset = $start >= 0 ? $start : ($page > 0 && $pageSize > 0 ? ($page - 1) * $pageSize : 0);
+		}
+		$userSelect = Decrypt(Post("s", ""));
+		$userFilter = Decrypt(Post("f", ""));
+		$userOrderBy = Decrypt(Post("o", ""));
+		$keys = Post("keys");
+		$lookup->LookupType = $lookupType; // Lookup type
+		if ($keys !== NULL) { // Selected records from modal
+			if (is_array($keys))
+				$keys = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $keys);
+			$lookup->FilterFields = []; // Skip parent fields if any
+			$lookup->FilterValues[] = $keys; // Lookup values
+			$pageSize = -1; // Show all records
+		} else { // Lookup values
+			$lookup->FilterValues[] = Post("v0", Post("lookupValue", ""));
+		}
+		$cnt = is_array($lookup->FilterFields) ? count($lookup->FilterFields) : 0;
+		for ($i = 1; $i <= $cnt; $i++)
+			$lookup->FilterValues[] = Post("v" . $i, "");
+		$lookup->SearchValue = $searchValue;
+		$lookup->PageSize = $pageSize;
+		$lookup->Offset = $offset;
+		if ($userSelect != "")
+			$lookup->UserSelect = $userSelect;
+		if ($userFilter != "")
+			$lookup->UserFilter = $userFilter;
+		if ($userOrderBy != "")
+			$lookup->UserOrderBy = $userOrderBy;
+		$lookup->toJson($this); // Use settings from current page
+	}
+
 	// Set up API request
 	public function setupApiRequest()
 	{

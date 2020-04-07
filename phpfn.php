@@ -305,7 +305,8 @@ function RemoveHeader($name) {
  * @return string
  */
 function ReadCookie($name) {
-	return @$_COOKIE[PROJECT_NAME][$name];
+	$ar = \Delight\Cookie\Cookie::get(PROJECT_NAME);
+	return @$ar[$name];
 }
 
 /**
@@ -325,7 +326,7 @@ function CanTrackCookie() {
 function CreateConsentCookie() {
 	$date = new \DateTime;
 	$date->setTimestamp(Config("COOKIE_EXPIRY_TIME"));
-	return PROJECT_NAME . "[" . Config("CONSENT_COOKIE_NAME") . "]=1;path=/;expires=" . $date->format(\DateTime::COOKIE);
+	return PROJECT_NAME . "[" . Config("CONSENT_COOKIE_NAME") . "]=1;path=/;expires=" . $date->format(\DateTime::COOKIE); // Do not use \Delight\Cookie\Cookie()
 }
 
 /**
@@ -339,8 +340,15 @@ function CreateConsentCookie() {
  */
 function WriteCookie($name, $value, $expiry = -1, $essential = TRUE) {
 	$expiry = ($expiry > -1) ? $expiry : Config("COOKIE_EXPIRY_TIME");
-	if ($essential || CanTrackCookie())
-		setcookie(PROJECT_NAME . '[' . $name . ']', $value, $expiry);
+	if ($essential || CanTrackCookie()) {
+		$cookie = new \Delight\Cookie\Cookie(PROJECT_NAME . "[" . $name . "]");
+		$cookie->setValue($value);
+		$cookie->setExpiryTime($expiry);
+		$cookie->setSameSiteRestriction(Config("COOKIE_SAMESITE"));
+		$cookie->setHttpOnly(Config("COOKIE_HTTP_ONLY"));
+		$cookie->setSecureOnly(Config("COOKIE_SAMESITE") == "None" || Config("COOKIE_SECURE"));
+		$cookie->save();
+	}
 }
 
 /**
@@ -7373,8 +7381,6 @@ class AdvancedSecurity
 	// Save User Level to Session
 	public function saveUserLevel()
 	{
-
-		//$_SESSION[SESSION_PROJECT_ID] = CurrentProjectID(); // Save project id
 		$_SESSION[SESSION_AR_USER_LEVEL] = $this->UserLevel;
 		$_SESSION[SESSION_AR_USER_LEVEL_PRIV] = $this->UserLevelPriv;
 	}
@@ -7382,11 +7388,7 @@ class AdvancedSecurity
 	// Load User Level from Session
 	public function loadUserLevel()
 	{
-
-		//$projectID = CurrentProjectID();
-		//if (!is_array(@$_SESSION[SESSION_AR_USER_LEVEL]) || !is_array(@$_SESSION[SESSION_AR_USER_LEVEL_PRIV]) || $projectID != @$_SESSION[SESSION_PROJECT_ID]) { // Reload if different project
-
-		if (!is_array(@$_SESSION[SESSION_AR_USER_LEVEL]) || !is_array(@$_SESSION[SESSION_AR_USER_LEVEL_PRIV])) {
+		if (empty(@$_SESSION[SESSION_AR_USER_LEVEL]) || empty(@$_SESSION[SESSION_AR_USER_LEVEL_PRIV])) {
 			$this->setupUserLevel();
 			$this->saveUserLevel();
 		} else {
@@ -7483,7 +7485,7 @@ function ValidApiRequest() {
 			$validRequest = $func(Param(Config("TOKEN_NAME")), SessionTimeoutTime());
 			if ($validRequest) {
 				if (session_status() !== PHP_SESSION_ACTIVE)
-					session_start(); // Init session data
+					\Delight\Cookie\Session::start(Config("COOKIE_SAMESITE")); // Init session data
 				if (!isset($Security))
 					$Security = new AdvancedSecurity();
 			}
@@ -7491,9 +7493,9 @@ function ValidApiRequest() {
 		}
 
 		// Login user for API request
-		if (is_array($RequestSecurity)) {
+		if (is_array($RequestSecurity)) { // Decoded by $api->decodeJWT()
 			if (session_status() !== PHP_SESSION_ACTIVE)
-				session_start(); // Init session data
+				\Delight\Cookie\Session::start(Config("COOKIE_SAMESITE")); // Init session data
 			if (!isset($Security))
 				$Security = new AdvancedSecurity();
 			return TRUE;
